@@ -22,13 +22,40 @@ describe('User visits index', () => {
     });
 
     // Add the 'outside of working hours' test here
+    it('check order hour no too early or late', () => {
+        const minHour = '7:00';
+        const maxHour = '13:00';
 
+        browser.url('/');
+        const HTML = browser.getHTML('body');
+        const checkHTML = parseTextFromHTML(HTML, '#select-pickUp');
+
+        assert.notInclude(checkHTML, minHour);
+        assert.notInclude(checkHTML, maxHour);
+    });
 
     // Add the 'displays the selected hour' test here
-    
+    it('check selected hour displayed', () => {
+        const hour = '9:00';
+
+        browser.url('/');
+        browser.selectByVisibleText('#select-pickUp', hour);
+        browser.click('#submit-order');
+        browser.url('/');
+  
+        assert.include(browser.getText('#pickUp'), hour);
+    });
     
     // Add the 'labels the pick up hour' test here
+    it('label the correct pick up hour', () => {
+        const testText = 'pick up hour';
 
+        browser.url('/');
+        const HTML = browser.getHTML('body');
+        const checkHTML = parseTextFromHTML(HTML, '#pickUp');
+
+        assert.include(checkHTML, testText);
+    });
 
     it('accepts the customer name', () => {
       const name = 'Hungry Person';
