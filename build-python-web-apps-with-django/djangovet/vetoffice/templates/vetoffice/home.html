@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Vet Office</title>
-</head>
-<body>
-  <h1>Welcome to the Vet Office, {{ name }}</h1>
-</body>
-</html>
+{% extends "vetoffice/base.html" %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'vetoffice/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<p>Welcome, {{ name|lower }}!</p>
+  {% if pet.animal_type == "Dog" %}
+    <p>The animal is a dog.</p>
+  {% elif pet.animal_type == "Cat" %}
+    <p>The animal is a cat.</p>
+  {% else %}
+    <p>The animal is not a dog or cat.</p>
+  {% endif %}
+
+  <p>Here is the current list of patients:</p>
+  {% for pet in pets|dictsort:'petname' %}
+    <p>{{ pet.petname }}: {{ pet.animal_type}}</p>
+  {% endfor %}
+{% endblock %}
